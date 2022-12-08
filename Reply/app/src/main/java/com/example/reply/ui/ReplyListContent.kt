@@ -76,6 +76,7 @@ fun ReplyInboxScreen(
             first = {
                 ReplyEmailList(
                     emails = replyHomeUIState.emails,
+                    selectedEmail = replyHomeUIState.selectedEmail,
                     emailLazyListState = emailLazyListState,
                     navigateToDetail = navigateToDetail
                 )
@@ -148,6 +149,7 @@ fun ReplySinglePaneContent(
 fun ReplyEmailList(
     emails: List<Email>,
     emailLazyListState: LazyListState,
+    selectedEmail: Email? = null,
     modifier: Modifier = Modifier,
     navigateToDetail: (Long, ReplyContentType) -> Unit
 ) {
@@ -156,7 +158,10 @@ fun ReplyEmailList(
             ReplySearchBar(modifier = Modifier.fillMaxWidth())
         }
         items(items = emails, key = { it.id }) { email ->
-            ReplyEmailListItem(email = email) { emailId ->
+            ReplyEmailListItem(
+                email = email,
+                isSelected = email.id == selectedEmail?.id
+            ) { emailId ->
                 navigateToDetail(emailId, ReplyContentType.SINGLE_PANE)
             }
         }

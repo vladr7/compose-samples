@@ -38,6 +38,7 @@ object LocalEmailsDataProvider {
               
               Your alpha testers will be automatically notified. If you'd rather send them a link directly, go to your Google Play Console and follow the instructions for obtaining an open alpha testing link.
             """.trimIndent(),
+            isStarred = true,
             mailbox = MailboxType.TRASH,
             createdAt = "3 hours ago",
         ),
@@ -57,6 +58,7 @@ object LocalEmailsDataProvider {
             "Raspberry Pie: We should make this pie recipe tonight! The filling is " +
                 "very quick to put together.",
             createdAt = "2 hours ago",
+            isStarred = true,
             mailbox = MailboxType.SENT
         ),
         Email(
@@ -65,6 +67,7 @@ object LocalEmailsDataProvider {
             recipients = listOf(LocalAccountsDataProvider.getDefaultUserAccount()),
             subject = "Delivered",
             body = "Your shoes should be waiting for you at home!",
+            isStarred = true,
             createdAt = "2 hours ago",
         ),
         Email(
@@ -94,6 +97,7 @@ object LocalEmailsDataProvider {
 
                 Ali
             """.trimIndent(),
+            isStarred = true,
             createdAt = "40 mins ago",
         ),
         Email(
@@ -109,6 +113,7 @@ object LocalEmailsDataProvider {
                 EmailAttachment(R.drawable.paris_4, "Street with bike in Paris")
             ),
             isImportant = true,
+            isStarred = true,
             createdAt = "1 hour ago",
         ),
     )

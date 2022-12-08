@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.StarBorder
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -85,9 +86,9 @@ fun ReplyEmailThreadItem(
                         .background(MaterialTheme.colorScheme.surface)
                 ) {
                     Icon(
-                        imageVector = Icons.Default.StarBorder,
+                        imageVector = if (email.isStarred) Icons.Default.Star else Icons.Default.StarBorder,
                         contentDescription = "Favorite",
-                        tint = MaterialTheme.colorScheme.outline
+                        tint = if (email.isStarred) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.outline
                     )
                 }
             }
