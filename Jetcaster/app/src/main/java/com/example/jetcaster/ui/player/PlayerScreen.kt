@@ -16,7 +16,9 @@
 
 package com.example.jetcaster.ui.player
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.basicMarquee
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -137,8 +139,10 @@ fun PlayerContent(
         when (devicePosture) {
             is DevicePosture.TableTopPosture ->
                 PlayerContentTableTop(uiState, devicePosture, onBackPress)
+
             is DevicePosture.BookPosture ->
                 PlayerContentBook(uiState, devicePosture, onBackPress)
+
             is DevicePosture.SeparatingPosture ->
                 if (devicePosture.orientation == FoldingFeature.Orientation.HORIZONTAL) {
                     PlayerContentTableTop(
@@ -153,6 +157,7 @@ fun PlayerContent(
                         onBackPress
                     )
                 }
+
             else ->
                 PlayerContentRegular(uiState, onBackPress)
         }
@@ -393,6 +398,7 @@ private fun PlayerImage(
     )
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 private fun PodcastDescription(
     title: String,
@@ -403,7 +409,7 @@ private fun PodcastDescription(
         text = title,
         style = titleTextStyle,
         maxLines = 1,
-        overflow = TextOverflow.Ellipsis
+        modifier = Modifier.basicMarquee()
     )
     CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
         Text(
