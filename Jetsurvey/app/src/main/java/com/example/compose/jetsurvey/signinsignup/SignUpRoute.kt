@@ -17,7 +17,6 @@
 package com.example.compose.jetsurvey.signinsignup
 
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun SignUpRoute(
@@ -26,15 +25,15 @@ fun SignUpRoute(
     onSignInAsGuest: () -> Unit,
     onNavUp: () -> Unit,
 ) {
-    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory())
-    SignUpScreen(
-        email = email,
-        onSignUpSubmitted = { email, password ->
-            signUpViewModel.signUp(email, password, onSignUpSubmitted)
-        },
-        onSignInAsGuest = {
-            signUpViewModel.signInAsGuest(onSignInAsGuest)
-        },
-        onNavUp = onNavUp,
-    )
+//    val signUpViewModel: SignUpViewModel = viewModel(factory = SignUpViewModelFactory())
+//    SignUpScreen(
+//        email = email,
+//        onSignUpSubmitted = { email, password ->
+//            signUpViewModel.signUp(email, password, onSignUpSubmitted)
+//        },
+//        onSignInAsGuest = {
+//            signUpViewModel.signInAsGuest(onSignInAsGuest)
+//        },
+//        onNavUp = onNavUp,
+//    )
 }
