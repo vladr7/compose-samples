@@ -17,9 +17,8 @@
 package com.example.compose.jetsurvey.signinsignup
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,30 +29,37 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.compose.jetsurvey.R
+import com.example.compose.jetsurvey.theme.stronglyDeemphasizedAlpha
 
 @Composable
-fun WelcomeScreen() {
-    Column {
-        WelcomeTopBar()
-
+fun WelcomeScreen(
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        WelcomeTop(modifier)
+        SingInCreateAccount(modifier)
     }
 }
 
 @Composable
-fun WelcomeTopBar(
+fun WelcomeTop(
     modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Logo(modifier
-            .padding(16.dp))
+        Logo(
+            modifier
+                .padding(16.dp)
+        )
         Text(
             text = stringResource(id = R.string.app_tagline),
             textAlign = TextAlign.Center,
-            fontSize = 24.sp,
+            fontSize = 14.sp,
             color = Color.White,
-
         )
     }
 }
@@ -74,4 +80,64 @@ private fun Logo(
         modifier = modifier,
         contentDescription = null
     )
+}
+
+@Composable
+fun SingInCreateAccount(modifier: Modifier = Modifier) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Text(
+            text = stringResource(id = R.string.sign_in_create_account),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha),
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(top = 64.dp, bottom = 12.dp)
+        )
+        Email()
+        Spacer(modifier = modifier.padding(8.dp))
+        Button(
+            onClick = { /*TODO*/ }, modifier = modifier
+                .padding(8.dp)
+                .fillMaxWidth(0.9f)
+        ) {
+            Text(text = stringResource(id = R.string.user_continue))
+        }
+        OrSignInAsGuest(modifier)
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Email(
+    modifier: Modifier = Modifier
+) {
+    OutlinedTextField(
+        value = "Email", onValueChange = {},
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxWidth(fraction = 0.9f)
+    )
+}
+
+@Composable
+fun OrSignInAsGuest(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = stringResource(id = R.string.or),
+        style = MaterialTheme.typography.bodyMedium,
+        textAlign = TextAlign.Center,
+        modifier = modifier.padding(8.dp),
+        color = MaterialTheme.colorScheme.onSurface.copy(alpha = stronglyDeemphasizedAlpha),
+    )
+    OutlinedButton(
+        onClick = { /*TODO*/ },
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxWidth(0.9f),
+    ) {
+        Text(stringResource(id = R.string.sign_in_guest))
+    }
 }
