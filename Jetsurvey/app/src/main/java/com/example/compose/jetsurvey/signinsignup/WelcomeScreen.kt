@@ -19,9 +19,11 @@ package com.example.compose.jetsurvey.signinsignup
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -33,19 +35,30 @@ import com.example.compose.jetsurvey.theme.stronglyDeemphasizedAlpha
 
 @Composable
 fun WelcomeScreen(
+    onSignInSignUp: (email: String) -> Unit,
+    onSignInAsGuest: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        WelcomeTop(modifier)
-        SingInCreateAccount(modifier)
+        var showBranding by remember { mutableStateOf(true) }
+
+        if(showBranding) {
+            Branding(modifier)
+        }
+        SingInCreateAccount(
+            modifier,
+            emailFocusChanged = { focus ->
+                showBranding = !focus
+            }
+        )
     }
 }
 
 @Composable
-fun WelcomeTop(
+fun Branding(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -83,7 +96,10 @@ private fun Logo(
 }
 
 @Composable
-fun SingInCreateAccount(modifier: Modifier = Modifier) {
+fun SingInCreateAccount(
+    modifier: Modifier = Modifier,
+    emailFocusChanged: (Boolean) -> Unit
+) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -95,7 +111,9 @@ fun SingInCreateAccount(modifier: Modifier = Modifier) {
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = 64.dp, bottom = 12.dp)
         )
-        Email()
+        Email(
+            emailFocusChanged = emailFocusChanged
+        )
         Spacer(modifier = modifier.padding(8.dp))
         Button(
             onClick = { /*TODO*/ }, modifier = modifier
@@ -111,16 +129,24 @@ fun SingInCreateAccount(modifier: Modifier = Modifier) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Email(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    emailFocusChanged: (Boolean) -> Unit
 ) {
+    var focus by rememberSaveable { mutableStateOf(false) }
+
     OutlinedTextField(
         value = "Email", onValueChange = {},
         modifier = modifier
             .padding(8.dp)
             .fillMaxWidth(fraction = 0.9f)
+            .onFocusChanged { focusState ->
+                focus = focusState.isFocused
+            }
     )
+    emailFocusChanged(focus) // todo evaluate this
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OrSignInAsGuest(
     modifier: Modifier = Modifier
