@@ -26,17 +26,17 @@ fun WelcomeRoute(
     onSignInAsGuest: () -> Unit,
 ) {
     val welcomeViewModel: WelcomeViewModel = viewModel(factory = WelcomeViewModelFactory())
-
-    WelcomeScreen(
-        onSignInSignUp = { email ->
-            welcomeViewModel.handleContinue(
-                email = email,
-                onNavigateToSignIn = onNavigateToSignIn,
-                onNavigateToSignUp = onNavigateToSignUp,
-            )
-        },
-        onSignInAsGuest = {
-            welcomeViewModel.signInAsGuest(onSignInAsGuest)
-        },
-    )
+    SignInScreen()
+//    WelcomeScreen(
+//        onSignInSignUp = { email ->
+//            welcomeViewModel.handleContinue(
+//                email = email,
+//                onNavigateToSignIn = onNavigateToSignIn,
+//                onNavigateToSignUp = onNavigateToSignUp,
+//            )
+//        },
+//        onSignInAsGuest = {
+//            welcomeViewModel.signInAsGuest(onSignInAsGuest)
+//        },
+//    )
 }

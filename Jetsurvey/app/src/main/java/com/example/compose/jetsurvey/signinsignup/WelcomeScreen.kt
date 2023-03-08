@@ -141,7 +141,13 @@ fun Email(
             .fillMaxWidth(fraction = 0.9f)
             .onFocusChanged { focusState ->
                 focus = focusState.isFocused
-            }
+            },
+        label = {
+            Text(
+                text = stringResource(id = R.string.email),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
     )
     emailFocusChanged(focus) // todo evaluate this
 }

@@ -19,17 +19,22 @@ package com.example.compose.jetsurvey.signinsignup
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.jetsurvey.R
 
 @Composable
-fun SignIn(
+fun SignInScreen(
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -37,7 +42,18 @@ fun SignIn(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        SignInTopBar("Sign In", onNavUp = {} , modifier)
+        var passwordText by remember { mutableStateOf("Password") }
+
+        SignInTopBar("Sign In", onNavUp = {}, modifier)
+        Spacer(modifier = modifier.padding(16.dp))
+        Email(emailFocusChanged = {})
+        Spacer(modifier = modifier.padding(8.dp))
+        Password(
+            passwordValue = passwordText,
+            passwordValueChanged = { newText ->
+                passwordText = newText
+            }
+        )
     }
 }
 
@@ -75,8 +91,42 @@ fun SignInTopBar(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun Password(
+    modifier: Modifier = Modifier,
+    passwordValueChanged: (String) -> Unit,
+    passwordValue: String
+) {
+    var showPassword by rememberSaveable { mutableStateOf(false) }
+
+    OutlinedTextField(
+        value = passwordValue, onValueChange = passwordValueChanged,
+        modifier = modifier
+            .padding(8.dp)
+            .fillMaxWidth(fraction = 0.9f),
+        trailingIcon = {
+            if (showPassword) {
+                IconButton(onClick = { showPassword = false }) {
+                    Icon(Icons.Filled.Visibility, contentDescription = null)
+                }
+            } else {
+                IconButton(onClick = { showPassword = true }) {
+                    Icon(Icons.Filled.VisibilityOff, contentDescription = null)
+                }
+            }
+        },
+        visualTransformation = if (showPassword) {
+            VisualTransformation.None
+        } else {
+            PasswordVisualTransformation()
+        },
+    )
+}
+
+
 @Preview(showBackground = true)
 @Composable
 fun SignInPreview() {
-    SignIn()
+    SignInScreen()
 }
