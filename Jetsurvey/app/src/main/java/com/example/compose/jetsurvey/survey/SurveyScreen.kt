@@ -21,8 +21,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,25 +35,46 @@ import com.example.compose.jetsurvey.util.supportWideScreen
 fun SurveyResultScreen(
     content: @Composable (PaddingValues) -> Unit,
 ) {
+    var shouldShowPreviousButton by remember { mutableStateOf(false) }
+    var shouldShowDoneButton by remember { mutableStateOf(false) }
+    var questionIndex by remember { mutableStateOf(0) }
+
     Surface(modifier = Modifier.supportWideScreen()) {
         Scaffold(
             topBar = {
                 SurveyTopAppBar(
-                    questionIndex = 0,
+                    questionIndex = questionIndex,
                     totalQuestionsCount = 5,
 //                    onClosePressed = onClosePressed,
                 )
             },
             content = content,
             bottomBar = {
-//                SurveyBottomBar(
-//                    shouldShowPreviousButton = surveyScreenData.shouldShowPreviousButton,
-//                    shouldShowDoneButton = surveyScreenData.shouldShowDoneButton,
-//                    isNextButtonEnabled = isNextEnabled,
-//                    onPreviousPressed = onPreviousPressed,
-//                    onNextPressed = onNextPressed,
-//                    onDonePressed = onDonePressed
-//                )
+                SurveyBottomBar(
+                    shouldShowPreviousButton = shouldShowPreviousButton,
+                    shouldShowDoneButton = shouldShowDoneButton,
+                    previousClicked = {
+                        questionIndex--
+                        if(questionIndex == 0) {
+                            shouldShowPreviousButton = false
+                        }
+                        if(questionIndex < 4) {
+                            shouldShowDoneButton = false
+                        }
+                    },
+                    nextClicked = {
+                        questionIndex++
+                        shouldShowPreviousButton = true
+                        if(questionIndex >= 4) {
+                            shouldShowDoneButton = true
+                        }
+                    },
+                    doneClicked = {
+                        questionIndex = 0
+                        shouldShowPreviousButton = false
+                        shouldShowDoneButton = false
+                    }
+                )
             }
         )
     }
@@ -119,4 +139,53 @@ fun TopAppBarTitle(
     }
 }
 
+@Composable
+fun SurveyBottomBar(
+    shouldShowDoneButton: Boolean,
+    shouldShowPreviousButton: Boolean,
+    previousClicked: () -> Unit,
+    nextClicked: () -> Unit,
+    doneClicked: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Row(
+        horizontalArrangement = Arrangement.Center,
+        modifier = modifier
+            .padding(20.dp)
+            .fillMaxWidth()
+    ) {
+        if (shouldShowPreviousButton) {
+            Button(
+                onClick = previousClicked,
+                modifier = modifier
+                    .padding(8.dp)
+                    .height(48.dp)
+                    .weight(1f)
+            ) {
+                Text(text = "Previous")
+            }
+        }
+        if (shouldShowDoneButton) {
+            Button(
+                onClick = doneClicked,
+                modifier = modifier
+                    .padding(8.dp)
+                    .height(48.dp)
+                    .weight(1f)
+            ) {
+                Text("Done")
+            }
+        } else {
+            Button(
+                onClick = nextClicked,
+                modifier = modifier
+                    .padding(8.dp)
+                    .height(48.dp)
+                    .weight(1f)
+            ) {
+                Text("Next")
+            }
+        }
 
+    }
+}
