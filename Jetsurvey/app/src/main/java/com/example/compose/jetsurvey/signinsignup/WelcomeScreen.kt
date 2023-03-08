@@ -147,7 +147,7 @@ fun Email(
                 text = stringResource(id = R.string.email),
                 style = MaterialTheme.typography.bodyMedium,
             )
-        }
+        },
     )
     emailFocusChanged(focus) // todo evaluate this
 }

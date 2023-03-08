@@ -17,6 +17,8 @@
 package com.example.compose.jetsurvey.signinsignup
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronLeft
 import androidx.compose.material.icons.filled.Visibility
@@ -27,8 +29,11 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.jetsurvey.R
@@ -42,7 +47,8 @@ fun SignInScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        var passwordText by remember { mutableStateOf("Password") }
+        var passwordText by remember { mutableStateOf("") }
+        var passwordValid by remember { mutableStateOf(false) }
 
         SignInTopBar("Sign In", onNavUp = {}, modifier)
         Spacer(modifier = modifier.padding(16.dp))
@@ -52,8 +58,18 @@ fun SignInScreen(
             passwordValue = passwordText,
             passwordValueChanged = { newText ->
                 passwordText = newText
+                passwordValid = newText.length > 3
+            },
+            onImeAction = {
+                // Submit sign in request
             }
         )
+        Spacer(modifier = modifier.padding(8.dp))
+        SignInButton(modifier, buttonEnabled = passwordValid)
+        Spacer(modifier = modifier.padding(20.dp))
+        ForgotPassword(modifier)
+        Spacer(modifier = modifier.padding(20.dp))
+        OrSignInAsGuest(modifier)
     }
 }
 
@@ -96,7 +112,9 @@ fun SignInTopBar(
 fun Password(
     modifier: Modifier = Modifier,
     passwordValueChanged: (String) -> Unit,
-    passwordValue: String
+    passwordValue: String,
+    imeAction: ImeAction = ImeAction.Done,
+    onImeAction: () -> Unit = {}
 ) {
     var showPassword by rememberSaveable { mutableStateOf(false) }
 
@@ -121,9 +139,50 @@ fun Password(
         } else {
             PasswordVisualTransformation()
         },
+        label = {
+            Text(
+                text = stringResource(id = R.string.password),
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(
+            imeAction = imeAction,
+            keyboardType = KeyboardType.Password
+        ),
+        keyboardActions = KeyboardActions(
+            onDone = {
+                onImeAction
+            }
+        )
     )
 }
 
+@Composable
+fun ForgotPassword(
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = "Forgot password?",
+        style = MaterialTheme.typography.bodyMedium,
+        color = MaterialTheme.colorScheme.primary,
+        textAlign = TextAlign.Center,
+    )
+}
+
+@Composable
+fun SignInButton(
+    modifier: Modifier = Modifier,
+    buttonEnabled: Boolean
+) {
+    Button(
+        onClick = { /*TODO*/ }, modifier = modifier
+            .padding(8.dp)
+            .fillMaxWidth(0.9f),
+        enabled = buttonEnabled
+    ) {
+        Text(text = stringResource(id = R.string.sign_in))
+    }
+}
 
 @Preview(showBackground = true)
 @Composable
