@@ -33,11 +33,14 @@ import com.example.compose.jetsurvey.util.supportWideScreen
 @OptIn(ExperimentalMaterial3Api::class) // Scaffold is experimental in m3
 @Composable
 fun SurveyResultScreen(
+    questionIndex: Int,
+    previousClicked: () -> Unit,
+    nextClicked: () -> Unit,
+    doneClicked: () -> Unit,
+    shouldShowPreviousButton: Boolean,
+    shouldShowDoneButton: Boolean,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    var shouldShowPreviousButton by remember { mutableStateOf(false) }
-    var shouldShowDoneButton by remember { mutableStateOf(false) }
-    var questionIndex by remember { mutableStateOf(0) }
 
     Surface(modifier = Modifier.supportWideScreen()) {
         Scaffold(
@@ -53,27 +56,9 @@ fun SurveyResultScreen(
                 SurveyBottomBar(
                     shouldShowPreviousButton = shouldShowPreviousButton,
                     shouldShowDoneButton = shouldShowDoneButton,
-                    previousClicked = {
-                        questionIndex--
-                        if(questionIndex == 0) {
-                            shouldShowPreviousButton = false
-                        }
-                        if(questionIndex < 4) {
-                            shouldShowDoneButton = false
-                        }
-                    },
-                    nextClicked = {
-                        questionIndex++
-                        shouldShowPreviousButton = true
-                        if(questionIndex >= 4) {
-                            shouldShowDoneButton = true
-                        }
-                    },
-                    doneClicked = {
-                        questionIndex = 0
-                        shouldShowPreviousButton = false
-                        shouldShowDoneButton = false
-                    }
+                    previousClicked = previousClicked,
+                    nextClicked = nextClicked,
+                    doneClicked = doneClicked
                 )
             }
         )

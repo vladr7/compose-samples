@@ -43,8 +43,6 @@ fun FreeTimeQuestion(
 
 @Composable
 fun SuperheroQuestion(
-    selectedAnswer: Superhero?,
-    onOptionSelected: (Superhero) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     SingleChoiceQuestion(
@@ -56,8 +54,6 @@ fun SuperheroQuestion(
             Superhero(R.string.bugchaos, R.drawable.bug_of_chaos),
             Superhero(R.string.frag, R.drawable.frag),
         ),
-        selectedAnswer = selectedAnswer,
-        onOptionSelected = onOptionSelected,
         modifier = modifier,
     )
 }

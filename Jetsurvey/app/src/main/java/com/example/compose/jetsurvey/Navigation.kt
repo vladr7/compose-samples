@@ -29,7 +29,6 @@ import com.example.compose.jetsurvey.Destinations.WELCOME_ROUTE
 import com.example.compose.jetsurvey.signinsignup.SignInRoute
 import com.example.compose.jetsurvey.signinsignup.SignUpRoute
 import com.example.compose.jetsurvey.signinsignup.WelcomeRoute
-import com.example.compose.jetsurvey.survey.SurveyResultScreen
 import com.example.compose.jetsurvey.survey.SurveyRoute
 
 object Destinations {
@@ -100,9 +99,9 @@ fun JetsurveyNavHost(
         }
 
         composable(SURVEY_RESULTS_ROUTE) {
-            SurveyResultScreen {
-                navController.popBackStack(WELCOME_ROUTE, false)
-            }
+//            SurveyResultScreen {
+//                navController.popBackStack(WELCOME_ROUTE, false)
+//            }
         }
     }
 }

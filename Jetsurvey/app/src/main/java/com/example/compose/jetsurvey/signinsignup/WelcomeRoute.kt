@@ -17,10 +17,11 @@
 package com.example.compose.jetsurvey.signinsignup
 
 import androidx.compose.foundation.layout.padding
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.compose.jetsurvey.survey.FreeTimeQuestion
+import com.example.compose.jetsurvey.survey.SuperheroQuestion
 import com.example.compose.jetsurvey.survey.SurveyResultScreen
 
 @Composable
@@ -31,10 +32,48 @@ fun WelcomeRoute(
 ) {
     val welcomeViewModel: WelcomeViewModel = viewModel(factory = WelcomeViewModelFactory())
 
-    SurveyResultScreen { paddingValues ->
-        FreeTimeQuestion(
-            modifier = Modifier.padding(paddingValues)
-        )
+    var questionIndex by remember { mutableStateOf(0) }
+    var shouldShowPreviousButton by remember { mutableStateOf(false) }
+    var shouldShowDoneButton by remember { mutableStateOf(false) }
+
+    SurveyResultScreen(
+        questionIndex,
+        previousClicked = {
+            questionIndex--
+            if(questionIndex == 0) {
+                shouldShowPreviousButton = false
+            }
+            if(questionIndex < 4) {
+                shouldShowDoneButton = false
+            }
+        },
+        nextClicked = {
+            questionIndex++
+            shouldShowPreviousButton = true
+            if(questionIndex >= 4) {
+                shouldShowDoneButton = true
+            }
+        },
+        doneClicked = {
+            questionIndex = 0
+            shouldShowPreviousButton = false
+            shouldShowDoneButton = false
+        },
+        shouldShowPreviousButton = shouldShowPreviousButton,
+        shouldShowDoneButton = shouldShowDoneButton
+    ) { paddingValues ->
+        when(questionIndex) {
+            0 -> {
+                FreeTimeQuestion(
+                    modifier = Modifier.padding(paddingValues)
+                )
+            }
+            1 -> {
+                SuperheroQuestion(
+                    modifier = Modifier.padding(paddingValues)
+                )
+            }
+        }
     }
 
 //    SignInScreen()
