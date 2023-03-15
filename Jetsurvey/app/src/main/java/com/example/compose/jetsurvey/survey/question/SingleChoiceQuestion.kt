@@ -20,10 +20,11 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectableGroup
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -31,10 +32,9 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.jetsurvey.R
@@ -72,48 +72,26 @@ fun RadioButtonWithImageRow(
     var selected by rememberSaveable { mutableStateOf(false) }
 
     Surface(
-        shape = MaterialTheme.shapes.small,
-        color = if (selected) {
-            MaterialTheme.colorScheme.primaryContainer
-        } else {
-            MaterialTheme.colorScheme.surface
-        },
-        border = BorderStroke(
-            width = 1.dp,
-            color = if (selected) {
-                MaterialTheme.colorScheme.primary
-            } else {
-                MaterialTheme.colorScheme.outline
-            }
-        ),
-        modifier = modifier
-            .clip(MaterialTheme.shapes.small)
-            .selectable(
-                selected,
-                onClick = {  }, // todo
-                role = Role.RadioButton
-            )
+        border = BorderStroke(width = 1.dp, color = Color.DarkGray),
+        shape = RoundedCornerShape(16.dp),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            modifier = modifier
+                .padding(start = 16.dp, bottom = 5.dp, top = 5.dp)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = imageResourceId),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(56.dp)
-                    .clip(MaterialTheme.shapes.extraSmall)
-                    .padding(start = 0.dp, end = 8.dp)
+                painter = painterResource(id = imageResourceId), contentDescription = null
             )
-            Spacer(Modifier.width(8.dp))
-
-            Text(text, Modifier.weight(1f), style = MaterialTheme.typography.bodyLarge)
-            Box(Modifier.padding(8.dp)) {
-                RadioButton(selected, onClick = null)
-            }
+            Text(
+                text = text,
+                modifier.padding(start = 16.dp)
+                    .weight(1f)
+            )
+            RadioButton(
+                selected = selected, onClick = { },
+            )
         }
     }
 }
