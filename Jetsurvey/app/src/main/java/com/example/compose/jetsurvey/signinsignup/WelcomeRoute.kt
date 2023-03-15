@@ -16,8 +16,11 @@
 
 package com.example.compose.jetsurvey.signinsignup
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.compose.jetsurvey.survey.FreeTimeQuestion
 import com.example.compose.jetsurvey.survey.SurveyResultScreen
 
 @Composable
@@ -28,8 +31,10 @@ fun WelcomeRoute(
 ) {
     val welcomeViewModel: WelcomeViewModel = viewModel(factory = WelcomeViewModelFactory())
 
-    SurveyResultScreen {
-
+    SurveyResultScreen { paddingValues ->
+        FreeTimeQuestion(
+            modifier = Modifier.padding(paddingValues)
+        )
     }
 
 //    SignInScreen()

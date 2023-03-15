@@ -20,17 +20,10 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.compose.jetsurvey.R
-import com.example.compose.jetsurvey.survey.question.DateQuestion
-import com.example.compose.jetsurvey.survey.question.MultipleChoiceQuestion
-import com.example.compose.jetsurvey.survey.question.PhotoQuestion
-import com.example.compose.jetsurvey.survey.question.SingleChoiceQuestion
-import com.example.compose.jetsurvey.survey.question.SliderQuestion
-import com.example.compose.jetsurvey.survey.question.Superhero
+import com.example.compose.jetsurvey.survey.question.*
 
 @Composable
 fun FreeTimeQuestion(
-    selectedAnswers: List<Int>,
-    onOptionSelected: (selected: Boolean, answer: Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     MultipleChoiceQuestion(
@@ -44,8 +37,6 @@ fun FreeTimeQuestion(
             R.string.dance,
             R.string.watch_movies,
         ),
-        selectedAnswers = selectedAnswers,
-        onOptionSelected = onOptionSelected,
         modifier = modifier,
     )
 }
