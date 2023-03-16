@@ -23,18 +23,19 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.compose.jetsurvey.R
@@ -45,6 +46,8 @@ fun SingleChoiceQuestion(
     @StringRes titleResourceId: Int,
     @StringRes directionsResourceId: Int,
     possibleAnswers: List<Superhero>,
+    selectedAnswer: Superhero?,
+    onOptionSelected: (Superhero) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     QuestionWrapper(
@@ -52,11 +55,16 @@ fun SingleChoiceQuestion(
         directionsResourceId = directionsResourceId,
         modifier = modifier.selectableGroup(),
     ) {
-        possibleAnswers.forEach {
+        possibleAnswers.forEach { superhero ->
+            val selected = selectedAnswer == superhero
             RadioButtonWithImageRow(
                 modifier = Modifier.padding(vertical = 8.dp),
-                text = stringResource(id = it.stringResourceId),
-                imageResourceId = it.imageResourceId,
+                text = stringResource(id = superhero.stringResourceId),
+                imageResourceId = superhero.imageResourceId,
+                selected = selected,
+                onOptionSelected = {
+                    onOptionSelected(superhero)
+                }
             )
         }
     }
@@ -66,14 +74,21 @@ fun SingleChoiceQuestion(
 fun RadioButtonWithImageRow(
     text: String,
     @DrawableRes imageResourceId: Int,
+    selected: Boolean,
+    onOptionSelected: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-
-    var selected by rememberSaveable { mutableStateOf(false) }
 
     Surface(
         border = BorderStroke(width = 1.dp, color = Color.DarkGray),
         shape = RoundedCornerShape(16.dp),
+        modifier = modifier
+            .padding(top = 4.dp)
+            .selectable(
+                selected = selected,
+                onClick = onOptionSelected,
+                role = Role.RadioButton
+            )
     ) {
         Row(
             modifier = modifier
@@ -86,11 +101,13 @@ fun RadioButtonWithImageRow(
             )
             Text(
                 text = text,
-                modifier.padding(start = 16.dp)
+                modifier
+                    .padding(start = 16.dp)
                     .weight(1f)
             )
             RadioButton(
-                selected = selected, onClick = { },
+                selected = selected, onClick = null,
+                modifier = modifier.padding(end = 16.dp)
             )
         }
     }
@@ -106,11 +123,6 @@ fun SingleChoiceQuestionPreview() {
     )
     var selectedAnswer by remember { mutableStateOf<Superhero?>(null) }
 
-    SingleChoiceQuestion(
-        titleResourceId = R.string.pick_superhero,
-        directionsResourceId = R.string.select_one,
-        possibleAnswers = possibleAnswers,
-    )
 }
 
 data class Superhero(@StringRes val stringResourceId: Int, @DrawableRes val imageResourceId: Int)

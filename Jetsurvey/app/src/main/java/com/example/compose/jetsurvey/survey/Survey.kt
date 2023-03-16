@@ -17,7 +17,7 @@
 package com.example.compose.jetsurvey.survey
 
 import android.net.Uri
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.compose.jetsurvey.R
 import com.example.compose.jetsurvey.survey.question.*
@@ -45,6 +45,10 @@ fun FreeTimeQuestion(
 fun SuperheroQuestion(
     modifier: Modifier = Modifier,
 ) {
+    var selectedAnswer by remember {
+        mutableStateOf(Superhero(stringResourceId = R.string.spark, imageResourceId = R.drawable.spark))
+    }
+
     SingleChoiceQuestion(
         titleResourceId = R.string.pick_superhero,
         directionsResourceId = R.string.select_one,
@@ -54,6 +58,10 @@ fun SuperheroQuestion(
             Superhero(R.string.bugchaos, R.drawable.bug_of_chaos),
             Superhero(R.string.frag, R.drawable.frag),
         ),
+        selectedAnswer = selectedAnswer,
+        onOptionSelected = { superhero ->
+            selectedAnswer = superhero
+        },
         modifier = modifier,
     )
 }
